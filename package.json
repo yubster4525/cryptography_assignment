@@ -1,0 +1,19 @@
+{
+  "name": "crypto-algorithms",
+  "version": "1.0.0",
+  "description": "Implementation of classical cryptographic algorithms in JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "examples": "node examples.js"
+  },
+  "keywords": [
+    "cryptography",
+    "encryption",
+    "decryption",
+    "cipher",
+    "classical-cryptography"
+  ],
+  "author": "",
+  "license": "MIT"
+}
