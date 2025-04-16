@@ -8,12 +8,12 @@ function augustEncrypt(plaintext, keyword, polybius = null) {
   // Default Polybius square if none provided (6x6 grid with A-Z and 0-9)
   const defaultPolybius = [
     ['A', 'D', 'F', 'G', 'V', 'X'],
-    ['A', 'B', 'C', 'D', 'E', 'F'],
-    ['G', 'H', 'I', 'J', 'K', 'L'],
-    ['M', 'N', 'O', 'P', 'Q', 'R'],
-    ['S', 'T', 'U', 'V', 'W', 'X'],
-    ['Y', 'Z', '0', '1', '2', '3'],
-    ['4', '5', '6', '7', '8', '9']
+    ['A', 'A', 'B', 'C', 'D', 'E'],
+    ['D', 'F', 'G', 'H', 'I', 'J'],
+    ['F', 'K', 'L', 'M', 'N', 'O'],
+    ['G', 'P', 'Q', 'R', 'S', 'T'],
+    ['V', 'U', 'V', 'W', 'X', 'Y'],
+    ['X', 'Z', '0', '1', '2', '3']
   ];
   
   const polybiusSquare = polybius || defaultPolybius;
@@ -34,7 +34,7 @@ function augustEncrypt(plaintext, keyword, polybius = null) {
       for (let col = 0; col < polybiusSquare[row].length; col++) {
         if (polybiusSquare[row][col] === char) {
           // Add the coordinates as fractionated form
-          fractionated += labels[row-1]; // Row label
+          fractionated += labels[0]; // Row label
           fractionated += labels[col]; // Column label
           found = true;
           break;
@@ -116,12 +116,12 @@ function augustDecrypt(ciphertext, keyword, polybius = null) {
   // Default Polybius square if none provided (6x6 grid with A-Z and 0-9)
   const defaultPolybius = [
     ['A', 'D', 'F', 'G', 'V', 'X'],
-    ['A', 'B', 'C', 'D', 'E', 'F'],
-    ['G', 'H', 'I', 'J', 'K', 'L'],
-    ['M', 'N', 'O', 'P', 'Q', 'R'],
-    ['S', 'T', 'U', 'V', 'W', 'X'],
-    ['Y', 'Z', '0', '1', '2', '3'],
-    ['4', '5', '6', '7', '8', '9']
+    ['A', 'A', 'B', 'C', 'D', 'E'],
+    ['D', 'F', 'G', 'H', 'I', 'J'],
+    ['F', 'K', 'L', 'M', 'N', 'O'],
+    ['G', 'P', 'Q', 'R', 'S', 'T'],
+    ['V', 'U', 'V', 'W', 'X', 'Y'],
+    ['X', 'Z', '0', '1', '2', '3']
   ];
   
   const polybiusSquare = polybius || defaultPolybius;
@@ -218,9 +218,8 @@ function augustDecrypt(ciphertext, keyword, polybius = null) {
     }
     
     // Get the character at the intersection
-    // rowIndex + 1 because the first row of polybiusSquare contains labels
-    if (rowIndex !== -1 && colIndex !== -1 && 
-        polybiusSquare[rowIndex + 1] && polybiusSquare[rowIndex + 1][colIndex]) {
+    // Add 1 to rowIndex since the first row of polybiusSquare contains labels
+    if (polybiusSquare[rowIndex + 1] && polybiusSquare[rowIndex + 1][colIndex]) {
       plaintext += polybiusSquare[rowIndex + 1][colIndex];
     } else {
       console.warn(`No character found at Polybius coordinates: ${rowLabel}${colLabel}`);

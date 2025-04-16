@@ -2,6 +2,10 @@
 
 A collection of 13 classical cryptographic algorithms implemented in JavaScript. This project provides implementations of various substitution and transposition ciphers for educational purposes.
 
+## Student Information
+- **Name:** Yuvan Raj Krishna
+- **Register Number:** 22011102127
+
 ## Algorithms Implemented
 
 1. **Caesar Cipher** - A simple substitution cipher where each letter is shifted by a fixed amount.
@@ -51,7 +55,3 @@ npm run examples
 ## Educational Purpose
 
 These implementations are primarily for educational purposes, to understand how classical ciphers work. They are not intended for securing sensitive information.
-
-## License
-
-MIT
