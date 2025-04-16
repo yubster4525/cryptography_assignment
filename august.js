@@ -34,7 +34,7 @@ function augustEncrypt(plaintext, keyword, polybius = null) {
       for (let col = 0; col < polybiusSquare[row].length; col++) {
         if (polybiusSquare[row][col] === char) {
           // Add the coordinates as fractionated form
-          fractionated += labels[0]; // Row label
+          fractionated += labels[row - 1]; // Row label
           fractionated += labels[col]; // Column label
           found = true;
           break;
@@ -160,15 +160,27 @@ function augustDecrypt(ciphertext, keyword, polybius = null) {
   // Calculate number of rows needed
   const numRows = Math.ceil(ciphertext.length / sanitizedKey.length);
   
-  // Calculate column lengths (last row might not be full)
-  const colLengths = Array(sanitizedKey.length).fill(Math.floor(ciphertext.length / sanitizedKey.length));
-  const remainder = ciphertext.length % sanitizedKey.length;
+  // Calculate the total number of cells in the grid
+  const totalCells = numRows * sanitizedKey.length;
   
-  // Distribute the remainder among columns according to the numeric key order
-  for (let i = 0; i < remainder; i++) {
-    // Find the column with the next key value
-    const col = numericKey.indexOf(i);
-    colLengths[col]++;
+  // Calculate how many cells are empty (in the last row)
+  const emptyCells = totalCells - ciphertext.length;
+  
+  // Calculate column lengths (all start with the maximum length)
+  const colLengths = Array(sanitizedKey.length).fill(numRows);
+  
+  // Identify which columns have one fewer character
+  // These are the rightmost columns in the original grid
+  if (emptyCells > 0) {
+    // Sort the columns by their original position
+    const sortedColumns = Array.from({ length: sanitizedKey.length }, (_, i) => i)
+      .sort((a, b) => a - b);
+    
+    // The last 'emptyCells' columns in original order will have one less character
+    for (let i = 1; i <= emptyCells; i++) {
+      const col = sortedColumns[sanitizedKey.length - i];
+      colLengths[col]--;
+    }
   }
   
   // Create the transposition grid
@@ -182,7 +194,9 @@ function augustDecrypt(ciphertext, keyword, polybius = null) {
     
     // Fill this column
     for (let row = 0; row < colLengths[col]; row++) {
-      grid[row][col] = ciphertext[charIndex++];
+      if (charIndex < ciphertext.length) {
+        grid[row][col] = ciphertext[charIndex++];
+      }
     }
   }
   
